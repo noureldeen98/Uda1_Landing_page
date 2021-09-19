@@ -41,48 +41,78 @@ var scrollPosit  =document.documentElement.scrollTop; // to get the of section f
 
 // build the nav
 
+/*function scrollTo(){
+    let links = document.querySelectorAll(".menu__link");
+    for(link of links){
+        link.addEventListener("click",function(){
+
+        })
+    }
+}*/
+
+
+
+
+
+
 function buildTheNav(){
     for(section of listOfSections){
 
          theLi =document.createElement('li'); // Creating the li tag to be appended to Ul tag 
-
          nameOfSection = section.getAttribute("data-nav"); // The name of section which will appear in the navBar
-
          targetSection =section.getAttribute("id");
+         //theLi.textContent= `${nameOfSection}`; // appending the name of section to list of items in the navbars
 
-         theLi.textContent= nameOfSection; // appending the name of section to list of items in the navbars
+         theLi.classList.add(targetSection );
 
-         theLi.innerHTML = `<a class="menu__link" href='#${targetSection}'>${nameOfSection}</a>`;  // Scroll to anchor ID using scrollTO event
+         theAnchors = document.createElement('a');// creating anchor tags to added to the li tag
+         theAnchors.textContent=nameOfSection;
+         theAnchors.classList.add("menu__link");
+         //theAnchors.setAttribute("href","#"+targetSection);
+         //theAnchors.setAttribute("style","pointer-events: none");
+         theAnchors.setAttribute("data-link",targetSection);
+         console.log(theAnchors);
 
-         listOfItems.appendChild(theLi);
-     
+
+
+         theLi.appendChild(theAnchors);
+
+
+
+
+
+        // Scroll to anchor ID using scrollTO event
          
+         //theLi.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
          
-        
-    }
-
-   
+          listOfItems.appendChild(theLi);  
     
+}
 }buildTheNav();
+
+
+
+// using scrollIntoView instead of href in anchor tags
+let listOfLinks =document.querySelectorAll(".menu__link");
+console.log(listOfLinks);
+listOfLinks.forEach((item)=>{
+    item.addEventListener("click",()=>{
+     let theHref=document.getElementById((item.getAttribute("data-link")));
+     theHref.scrollIntoView({behavior:"smooth", block:"center"});
+})
+
+})
+
+
+
+
 
 
 
 
 // Add class 'active' to section when near top of viewport
 
-/*
-var scrollPosit  =document.documentElement.scrollTop; // to get the of section from top
- // The name of section which will appear in the navBar
 
-for(section of listOfSections){
-    nameOfSection = section.getAttribute("data-nav");
-    section.addEventListner("scroll",function(){
-        if(scrollPosit>=section.offsetTop && scrollPosit<section.offsetTop+offsetHeight){
-            console.log(nameOfSection);
-        }
-    })
-}
-*/
 
 // Add class 'active' to section when near top of viewport
 // function to check the position of the section from all directions in html page
@@ -108,41 +138,6 @@ window.addEventListener("scroll",function(event){
         }
     });
 },false);
-
-
-// function to creat the active classes 
-/*function creatActiveSection(){
-  for (sec of listOfSections){
-        if(sectionBounds(sec)){
-           if (sec.classList.contains("your-active-class")){
-            sec.classList.remove("your-active-class");
-                     
-           }else{
-            sec.classList.add("your-active-class");
-           }
-           
-        }
-    }
-  
-}  
-document.addEventListener("scroll",creatActiveSection);
-
-
-/*function creatActiveSection(){
-    
-    for(sec of listOfSections){
-        let scrollPosi = sec.getBoundingClientRect();
-        if(scrollPosi.top >= 0 && scrollPosi.top < window.innerHeight){
-            if (!sec.classList.contains("your-active-class")){
-                sec.classList.add("your-active-class");          
-               }else{
-                sec.classList.remove("your-active-class");
-               }
-        }
-    }
-     
-}document.addEventListener("scroll",creatActiveSection);*/
-
 
 
 
