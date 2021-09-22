@@ -21,7 +21,6 @@
 const listOfItems = document.getElementById('navbar__list'); // The listOfItems is the menu which will contain the items.
 const listOfSections= document.querySelectorAll('section'); //  the listOfSections will contain the array of sections
 
-var scrollPosit  =document.documentElement.scrollTop; // to get the of section from top
 
 
 
@@ -41,14 +40,6 @@ var scrollPosit  =document.documentElement.scrollTop; // to get the of section f
 
 // build the nav
 
-/*function scrollTo(){
-    let links = document.querySelectorAll(".menu__link");
-    for(link of links){
-        link.addEventListener("click",function(){
-
-        })
-    }
-}*/
 
 
 
@@ -68,7 +59,7 @@ function buildTheNav(){
          theAnchors = document.createElement('a');// creating anchor tags to added to the li tag
          theAnchors.textContent=nameOfSection;
          theAnchors.classList.add("menu__link");
-         //theAnchors.setAttribute("href","#"+targetSection);
+         theAnchors.setAttribute("href","#"+targetSection);
          //theAnchors.setAttribute("style","pointer-events: none");
          theAnchors.setAttribute("data-link",targetSection);
          console.log(theAnchors);
@@ -96,9 +87,11 @@ function buildTheNav(){
 let listOfLinks =document.querySelectorAll(".menu__link");
 console.log(listOfLinks);
 listOfLinks.forEach((item)=>{
-    item.addEventListener("click",()=>{
-     let theHref=document.getElementById((item.getAttribute("data-link")));
-     theHref.scrollIntoView({behavior:"smooth", block:"center"});
+    item.addEventListener("click",(e)=>{
+        e.preventDefault();// which is used to prevent the role of href and allow the scrolling by JS
+      let theDataLink=document.getElementById((item.getAttribute("data-link")));
+           
+      theDataLink.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
 })
 
 })
@@ -132,9 +125,11 @@ window.addEventListener("scroll",function(event){
     findSection.forEach(section=>{
         if(sectionBounds(section)){
             section.classList.add("your-active-class");
+            section.style.cssText="background-color:purple";
         }
         else{
             section.classList.remove("your-active-class");
+            section.style.cssText="background-color:none;";
         }
     });
 },false);
