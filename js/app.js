@@ -11,24 +11,21 @@
  * 
  * JS Standard: ESlint
  * 
-*/
+ */
 
 /**
  * Define Global Variables
  * 
-*/
+ */
 
 const listOfItems = document.getElementById('navbar__list'); // The listOfItems is the menu which will contain the items.
-const listOfSections= document.querySelectorAll('section'); //  the listOfSections will contain the array of sections
-
-
-
+const listOfSections = document.querySelectorAll('section'); //  the listOfSections will contain the array of sections
 
 /**
  * End Global Variables
  * Start Helper Functions
  * 
-*/
+ */
 
 
 
@@ -36,121 +33,86 @@ const listOfSections= document.querySelectorAll('section'); //  the listOfSectio
  * End Helper Functions
  * Begin Main Functions
  * 
-*/
+ */
 
 // build the nav
 
-
-
-
-
-
-
-function buildTheNav(){
-    for(section of listOfSections){
-
-         theLi =document.createElement('li'); // Creating the li tag to be appended to Ul tag 
-         nameOfSection = section.getAttribute("data-nav"); // The name of section which will appear in the navBar
-         targetSection =section.getAttribute("id");
-         //theLi.textContent= `${nameOfSection}`; // appending the name of section to list of items in the navbars
-
-         theLi.classList.add(targetSection );
-
-         theAnchors = document.createElement('a');// creating anchor tags to added to the li tag
-         theAnchors.textContent=nameOfSection;
-         theAnchors.classList.add("menu__link");
-         theAnchors.setAttribute("href","#"+targetSection);
-         //theAnchors.setAttribute("style","pointer-events: none");
-         theAnchors.setAttribute("data-link",targetSection);
-         console.log(theAnchors);
-
-
-
-         theLi.appendChild(theAnchors);
-
-
-
-
-
-        // Scroll to anchor ID using scrollTO event
-         
-         //theLi.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-         
-          listOfItems.appendChild(theLi);  
-    
+// building the navbar anchors
+function buildTheNav() {
+    for (section of listOfSections) {
+        theLi = document.createElement('li'); // Creating the li tag to be appended to Ul tag 
+        nameOfSection = section.getAttribute("data-nav"); // The name of section which will appear in the navBar
+        targetSection = section.getAttribute("id");
+        theLi.classList.add(targetSection);
+        theAnchors = document.createElement('a'); // creating anchor tags to added to the li tag
+        theAnchors.textContent = nameOfSection;
+        theAnchors.classList.add("menu__link");
+        theAnchors.setAttribute("href", "#" + targetSection);
+        theAnchors.setAttribute("data-link", targetSection);
+        theLi.style.cssText = "margin:7px"
+        theLi.appendChild(theAnchors);
+        listOfItems.appendChild(theLi);
+    }
 }
-}buildTheNav();
-
-
+// ./building the navbar anchors
 
 // using scrollIntoView instead of href in anchor tags
-let listOfLinks =document.querySelectorAll(".menu__link");
-console.log(listOfLinks);
-listOfLinks.forEach((item)=>{
-    item.addEventListener("click",(e)=>{
-        e.preventDefault();// which is used to prevent the role of href and allow the scrolling by JS
-      let theDataLink=document.getElementById((item.getAttribute("data-link")));
-           
-      theDataLink.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
-})
+function scrollIntoSectionSmooth() {
+    let listOfLinks = document.querySelectorAll(".menu__link");
+    // console.log(listOfLinks);
+    listOfLinks.forEach((item) => {
+        item.addEventListener("click", (e) => {
+            e.preventDefault(); // which is used to prevent the role of href and allow the scrolling by JS
+            let theDataLink = document.getElementById((item.getAttribute("data-link")));
+            // Navigate into section smoothly
+            theDataLink.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "nearest"
+            });
+        })
+    })
+}
+// ./using scrollIntoView instead of href in anchor tags
+// smooth navigate to link
 
-})
+// Build the navigation
+buildTheNav();
 
-
-
-
-
-
-
-
-// Add class 'active' to section when near top of viewport
-
+// scrollToSection 
+scrollIntoSectionSmooth()
 
 
 // Add class 'active' to section when near top of viewport
 // function to check the position of the section from all directions in html page
- function sectionBounds(theElement){
-        let scrollPosi = theElement.getBoundingClientRect();
-        return (
-            scrollPosi.top>=0 &&
-            scrollPosi.left >=0 &&
-            scrollPosi.bottom<= (window.innerHeight || document.documentElement.clientHeight) &&
-            scrollPosi.right<= (window.innerWidth || document.documentElement.clientWidth) 
-        );
-        
+function sectionBounds(theElement) {
+    let scrollPosit = theElement.getBoundingClientRect();
+    let ratioOfPointOfView = window.innerHeight * 24 / 100;
+    return (
+        scrollPosit.top < ratioOfPointOfView && scrollPosit.bottom > ratioOfPointOfView
+    );
 };
+// ./function to check the position of the section from all directions in html page
+
 // the Event listner here adding the active class or not according to which section will appear in viewport
-var findSection = listOfSections;
-window.addEventListener("scroll",function(event){
-    findSection.forEach(section=>{
-        if(sectionBounds(section)){
+const linksOfSections = document.querySelectorAll(".menu__link");
+window.addEventListener("scroll", function () {
+
+    // looping to get each section individual to add or remove active class 
+    listOfSections.forEach((section, index) => {
+        if (sectionBounds(section)) {
             section.classList.add("your-active-class");
-            section.style.cssText="background-color:purple";
-        }
-        else{
+            linksOfSections[index].classList.add("active");
+        } else {
             section.classList.remove("your-active-class");
-            section.style.cssText="background-color:none;";
+            linksOfSections[index].classList.remove("active");
         }
     });
-},false);
-
-
-
-
+}, false);
 
 
 /**
  * End Main Functions
  * Begin Events
  * 
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
-
-
-
-  
+ */
